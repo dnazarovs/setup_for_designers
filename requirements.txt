@@ -1,0 +1,12 @@
+einops
+torchsde
+kornia
+spandrel
+psutil
+safetensors
+omegaconf
+opencv-python
+Pillow
+scipy
+numpy
+torchaudio
