@@ -37,4 +37,4 @@ else
 fi
 
 cd "$COMFY_DIR"
-exec python3 main.py --listen 0.0.0.0 --port 8188
+exec python3 main.py --listen 0.0.0.0 --port 8188 --use-pytorch-cross-attention
