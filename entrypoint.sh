@@ -4,7 +4,6 @@ set -e
 COMFY_DIR="/opt/ComfyUI"
 TC_DIR="$COMFY_DIR/custom_nodes/ComfyUI-ToonCrafter/ToonCrafter"
 
-# ---- Configurable model selection via ENV ----
 MODEL_REPO="${TOONCRAFTER_MODEL_REPO:-Doubiiu/ToonCrafter}"
 MODEL_FILE="${TOONCRAFTER_MODEL_FILE:-model.ckpt}"
 MODEL_DIR="${TOONCRAFTER_MODEL_DIR:-tooncrafter_512_interp_v1}"
@@ -14,9 +13,8 @@ CKPT_FILE="$CKPT_DIR/model.ckpt"
 
 echo "[entrypoint] Starting ComfyUI"
 echo "[entrypoint] ToonCrafter model: repo=$MODEL_REPO file=$MODEL_FILE dir=$MODEL_DIR"
-echo "[entrypoint] TOONCRAFTER_FORCE_TORCH_ATTENTION=${TOONCRAFTER_FORCE_TORCH_ATTENTION:-0}"
+echo "[entrypoint] Checkpoint path: $CKPT_FILE"
 
-# ---- Download weights once (persisted via volume) ----
 if [ ! -f "$CKPT_FILE" ]; then
   echo "[entrypoint] Weights not found, downloading..."
   mkdir -p "$CKPT_DIR"
@@ -39,9 +37,5 @@ else
 fi
 
 cd "$COMFY_DIR"
-
-# ---- Run ComfyUI (torch attention in core) ----
-exec python3 main.py \
-  --listen 0.0.0.0 \
-  --port 8188 \
-  --use-pytorch-cross-attention
+# Force ComfyUI itself to use torch attention (stable)
+exec python3 main.py --listen 0.0.0.0 --port 8188 --use-pytorch-cross-attention
