@@ -14,7 +14,9 @@ CKPT_FILE="$CKPT_DIR/model.ckpt"
 
 echo "[entrypoint] Starting ComfyUI"
 echo "[entrypoint] ToonCrafter model: repo=$MODEL_REPO file=$MODEL_FILE dir=$MODEL_DIR"
+echo "[entrypoint] TOONCRAFTER_FORCE_TORCH_ATTENTION=${TOONCRAFTER_FORCE_TORCH_ATTENTION:-0}"
 
+# ---- Download weights once (persisted via volume) ----
 if [ ! -f "$CKPT_FILE" ]; then
   echo "[entrypoint] Weights not found, downloading..."
   mkdir -p "$CKPT_DIR"
@@ -33,8 +35,13 @@ shutil.copyfile(tmp, dst)
 print("[entrypoint] Downloaded to", dst)
 PY
 else
-  echo "[entrypoint] Weights already present"
+  echo "[entrypoint] Weights already present: $CKPT_FILE"
 fi
 
 cd "$COMFY_DIR"
-exec python3 main.py --listen 0.0.0.0 --port 8188 --use-pytorch-cross-attention
+
+# ---- Run ComfyUI (torch attention in core) ----
+exec python3 main.py \
+  --listen 0.0.0.0 \
+  --port 8188 \
+  --use-pytorch-cross-attention

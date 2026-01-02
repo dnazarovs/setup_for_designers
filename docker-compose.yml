@@ -9,6 +9,7 @@ services:
       TOONCRAFTER_MODEL_REPO: ${TOONCRAFTER_MODEL_REPO:-Doubiiu/ToonCrafter}
       TOONCRAFTER_MODEL_FILE: ${TOONCRAFTER_MODEL_FILE:-model.ckpt}
       TOONCRAFTER_MODEL_DIR:  ${TOONCRAFTER_MODEL_DIR:-tooncrafter_512_interp_v1}
+      TOONCRAFTER_FORCE_TORCH_ATTENTION: ${TOONCRAFTER_FORCE_TORCH_ATTENTION:-0}
 
     volumes:
       - ./data/models:/opt/ComfyUI/models
